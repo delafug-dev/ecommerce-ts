@@ -32,7 +32,7 @@ export const Card: React.FC<CardProps> = ({producto}) => {
                   alt="Photo by Austin Wade"
                   className="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110"
               />
-            { user &&
+            {user && user.username && user.username.length > 0 &&
                 <span className="absolute left-0 top-3 rounded-r-lg bg-red-500 px-3 py-1.5 text-sm font-semibold uppercase tracking-wider text-white">
                                 -50%
                 </span>
@@ -57,7 +57,7 @@ export const Card: React.FC<CardProps> = ({producto}) => {
                   <span className="font-bold text-gray-600 lg:text-lg">
                       {price}€
                   </span>
-                  { user &&
+                  { user && user.username && user.username.length > 0 &&
                         <button onClick={() => {addProductToCart(producto); addProductTotalNumber()}} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded">
                             Añadir al carrito
                         </button>

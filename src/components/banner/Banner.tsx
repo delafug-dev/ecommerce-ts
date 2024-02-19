@@ -9,8 +9,8 @@ export const Banner = () => {
     <div className="bg-white pt-6 sm:pt-8 lg:pt-12">
         <div className="mx-auto max-w-screen-2xl px-4 pb-4 md:px-8">
             <div className="relative flex flex-wrap rounded-lg bg-indigo-500 px-4 py-3 shadow-lg sm:flex-nowrap sm:items-center sm:justify-center sm:gap-3 sm:pr-8 md:px-8">
-                {   user ?
-                    <div className="order-1 mb-2 inline-block w-11/12 max-w-screen-sm text-sm text-white sm:order-none sm:mb-0 sm:w-auto md:text-base">Hola {user} ya tienes disponible descuentos de hasta el 50%</div>
+                {   user && user.username && user.username.length > 0 ?
+                    <div className="order-1 mb-2 inline-block w-11/12 max-w-screen-sm text-sm text-white sm:order-none sm:mb-0 sm:w-auto md:text-base">Hola {user.username} ya tienes disponible descuentos de hasta el 50%</div>
                     :
                     <div className="order-1 mb-2 inline-block w-11/12 max-w-screen-sm text-sm text-white sm:order-none sm:mb-0 sm:w-auto md:text-base">Si te logeas recibirás un descuento de hasta el 50% en nuestros productos</div>                   
                 }

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import data from "../../../data.json";
+import data from "../../../data/db.json";
 import { useCartProduct } from "../../hooks/useCartProduct";
+import { Producto } from "../../interfaces/producto-tienda";
 
 
 export const ProductDetails = () => {
@@ -8,7 +9,11 @@ export const ProductDetails = () => {
     const { id } = useParams();
     const { addProductToCart, addProductTotalNumber } = useCartProduct();
 
-    const findProduct = data.find((product) => product.id === Number(id));
+    const findProduct: Producto = {
+        ...data.products.find((product) => product.id === Number(id))!,
+        quantity: 0,
+    };
+    
     const { title, price, image, description, category, rating } = findProduct;
 
 
@@ -31,16 +36,12 @@ export const ProductDetails = () => {
                       </div>
                   </div>
 
-
-
                   <div className="md:py-8">
   
                       <div className="mb-2 md:mb-3">
                           <span className="mb-0.5 inline-block text-gray-500">{category}</span>
                           <h2 className="text-2xl font-bold text-gray-800 lg:text-3xl">{title}</h2>
                       </div>
-
-
 
                       <div className="mb-6 flex items-center gap-3 md:mb-10">
                           <div className="flex h-7 items-center gap-1 rounded-full bg-indigo-500 px-2 text-white">
@@ -76,8 +77,6 @@ export const ProductDetails = () => {
 
                           <span className="text-sm">2-4 day shipping</span>
                       </div>
-
-
 
                       <div className="flex gap-2.5">
                           <a onClick={() => {addProductToCart(findProduct); addProductTotalNumber()}} href="#" className="inline-block flex-1 rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 sm:flex-none md:text-base">Add to cart</a>

@@ -17,17 +17,14 @@ const CartProductsContext = createContext<CartProductsContextProps>({} as CartPr
 const CartProductsProvider = ({ children }) => {
 
 
-  const [cartProducts, setCartProduct] = useState<Producto[]>(() => {
-      const storedCartProducts = JSON.parse(localStorage.getItem('cartProducts') || '[]');
-      return storedCartProducts;
-  });
+  const [cartProducts, setCartProduct] = useState<Producto[]>([]);
 
   const [totalProductsNumber, setTotalProductsNumber] = useState<number>(cartProducts.reduce((acc, product) => acc + product.quantity, 0));
 
   useEffect(() => {
-      localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
-      console.log(cartProducts);
-  }, [cartProducts]);
+      const itemsSaved = JSON.parse(localStorage.getItem('cartProducts') || '[]');
+      itemsSaved && setCartProduct(itemsSaved);
+  }, []);
   
   const addProductTotalNumber = () => {
       setTotalProductsNumber(totalProductsNumber + 1);
@@ -38,9 +35,12 @@ const CartProductsProvider = ({ children }) => {
       const productExist = cartProducts.find((product) => product.id === producto.id);
       if(productExist) {
           const newCart = cartProducts.map((product) => product.id === producto.id ? {...product, quantity: product.quantity + 1} : product);
-          return setCartProduct(newCart);
+          setCartProduct(newCart)
+          localStorage.setItem('cartProducts', JSON.stringify(newCart));
+      }else {
+            setCartProduct([...cartProducts, {...producto, quantity: 1}]);
+            localStorage.setItem('cartProducts', JSON.stringify([...cartProducts, {...producto, quantity: 1}]));
       }
-      setCartProduct([...cartProducts, {...producto, quantity: 1}]);
   }
 
     const finishPurchase = () => {

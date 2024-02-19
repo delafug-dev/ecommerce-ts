@@ -1,10 +1,10 @@
-import data from "../../data.json";
+import data from "../../data/db.json";
 import { ReactNode, createContext } from "react";
 
 
 const ProductoContext = createContext<any>(null);
 
-const updatedData = data.map((producto) => ({
+const updatedData = data.products.map((producto) => ({
     ...producto,
     quantity: 0, 
 }));
