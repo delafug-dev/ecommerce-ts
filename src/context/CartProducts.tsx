@@ -46,14 +46,15 @@ const CartProductsProvider = ({ children }) => {
 
     const finishPurchase = () => {
         alert('Redirigiendo a pasarela de pago...');
-        setCartProduct([]);
+        localStorage.removeItem('cartProducts')
         setTotalProductsNumber(0);
         window.location.pathname = '/';
     }
 
     const deletePurchase = () => {
-        setCartProduct([]);
+        localStorage.removeItem('cartProducts')
         setTotalProductsNumber(0);
+        window.location.pathname = '/';
     }
 
   return (
