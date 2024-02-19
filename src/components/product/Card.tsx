@@ -16,7 +16,13 @@ export const Card: React.FC<CardProps> = ({producto}) => {
     const { addProductToCart, addProductTotalNumber } = useCartProduct();
     const navigate = useNavigate();
     const handleCardClick = () => {
-        navigate(`/product/${id}`, { state: { from: location.pathname } });
+        if(!user || !user.username || user.username.length === 0) {
+            navigate('/login')
+            return;
+        }else {
+            navigate(`/product/${id}`, { state: { from: location.pathname } });           
+        }
+        
     };
     
 

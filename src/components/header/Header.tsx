@@ -31,9 +31,9 @@ export const Header = () => {
 
       <div className="flex gap-12 items-center">
         <input onChange={searchProduct} name="first-name" placeholder="Buscar producto" className="w-72 rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
-        <Link to={user ? '/cart' : ''} className="flex items-center">
+        <Link to={user.username ? '/cart' : ''} className="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M16 6V4H8v2M7 18c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m10 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2m-9.8-3.2v-.1l.9-1.7h7.4c.7 0 1.4-.4 1.7-1l3.9-7l-1.7-1l-3.9 7h-7L4.3 2H1v2h2l3.6 7.6L5.2 14c-.1.3-.2.6-.2 1c0 1.1.9 2 2 2h12v-2H7.4c-.1 0-.2-.1-.2-.2"/></svg>  
-            <span>{totalProductsNumber}</span>
+            <span>{user.username ? totalProductsNumber : ''}</span>
         </Link>
         <button onClick={toggleTheme} className="bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md text-md">
             DARKMODE

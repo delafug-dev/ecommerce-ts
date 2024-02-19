@@ -9,13 +9,12 @@ export const Login = () => {
 
     const handleLogin = () => {
         login();
-        navigate(location.state?.from || '/');
+        navigate(location.state.pathname || '/');
     }
 
-    // const handleLogout = () => {
-    //     logout();
-    //     navigate(location.state?.from || '/');
-    // }
+    const handleLogout = () => {
+        logout();
+    }
 
 
   return (
@@ -36,7 +35,7 @@ export const Login = () => {
                       </div>
 
                       <button onClick={handleLogin} className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Log in</button>
-                      <button onClick={logout} className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Log out</button>
+                      <button onClick={handleLogout} className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Log out</button>
 
                   </div>
 

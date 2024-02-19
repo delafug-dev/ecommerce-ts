@@ -24,6 +24,7 @@ const CartProductsProvider = ({ children }) => {
   useEffect(() => {
       const itemsSaved = JSON.parse(localStorage.getItem('cartProducts') || '[]');
       itemsSaved && setCartProduct(itemsSaved);
+      setTotalProductsNumber(itemsSaved.reduce((acc, product) => acc + product.quantity, 0));  
   }, []);
   
   const addProductTotalNumber = () => {
