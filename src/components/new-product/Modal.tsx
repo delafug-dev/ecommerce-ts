@@ -75,10 +75,11 @@ export const Modal = ({toggleModal}) => {
                                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
                                 <select onSelect={handleCategory} id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option>Select category</option>
-                                    <option value="TV">TV/Monitors</option>
-                                    <option value="PC">PC</option>
-                                    <option value="GA">Gaming/Console</option>
-                                    <option value="PH">Phones</option>
+                                    <option value="camisetas">Camisetas</option>
+                                    <option value="chaquetas">Chaquetas</option>
+                                    <option value="zapatillas">Zapatillas</option>
+                                    <option value="pantalones">Pantalones</option>
+                                    <option value="accesorios">Accesorios</option>
                                 </select>
                             </div>
                             <div className="col-span-2">

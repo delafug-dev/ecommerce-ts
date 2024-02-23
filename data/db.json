@@ -185,7 +185,7 @@
     {
       "id": "18",
       "title": "MBJ Women's Solid Short Sleeve Boat Neck V ",
-      "price": 9.85,
+      "price": 10,
       "description": "95% RAYON 5% SPANDEX, Made in USA or Imported, Do Not Bleach, Lightweight fabric with great stretch for comfort, Ribbed on sleeves and neckline / Double stitching on bottom hem",
       "category": "women's clothing",
       "image": "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg",
@@ -198,7 +198,7 @@
     {
       "id": "19",
       "title": "Hola ",
-      "price": 7,
+      "price": 14,
       "description": "100% Polyester, Machine wash, 100% cationic polyester interlock, Machine Wash & Pre Shrunk for a Great Fit, Lightweight, roomy and highly breathable with moisture wicking fabric which helps to keep moisture away, Soft Lightweight Fabric with comfortable V-neck collar and a slimmer fit, delivers a sleek, more feminine silhouette and Added Comfort",
       "category": "women's clothing",
       "image": "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg",
@@ -207,6 +207,15 @@
         "rate": 4.5,
         "count": 146
       }
+    },
+    {
+      "id": "078f6143-0c3c-4ac0-a16f-3f0c3c44097c",
+      "title": "Pantalones",
+      "price": 39,
+      "category": "",
+      "image": "https://static.tiendy.net/shops/trademoda/products/p/a/original_pantalones-moda-hombre-tienda-barcelona-envios-gratis-2-796272-1.jpg",
+      "description": "Pantalones muy bonitos color beige ajustados",
+      "quantity": 1
     }
   ]
 }

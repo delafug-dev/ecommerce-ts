@@ -4,12 +4,14 @@ import { Producto } from "../../interfaces/producto-tienda";
 import { Card } from "./Card";
 import { Modal } from '../new-product/Modal';
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 
 export const ProductsCard = () => {
 
   const { stateSearchProduct } = useSearch();
   const {productos} = useProducts();
+  const { user } = useAuth();
   console.log(productos)
 
   const [modalHidden, setModalHidden] = useState(true);
@@ -34,11 +36,14 @@ export const ProductsCard = () => {
         </div>
 
           <div className="flex justify-end mt-14">
-            <button onClick={toggleModal} className="py-2 px-6 uppercase bg-blue-500 hover:bg-blue-700 text-white text-xl rounded-md ">
-              Add Product
-            </button>
-            {
-              modalHidden ? null : <Modal toggleModal={toggleModal}/>
+            { user.role === 'admin' &&
+
+              <button onClick={toggleModal} className="py-2 px-6 uppercase bg-blue-500 hover:bg-blue-700 text-white text-xl rounded-md ">
+                Add Product
+              </button>
+            }
+            { 
+              modalHidden  ? null : <Modal toggleModal={toggleModal}/>
             }
           </div>
 
