@@ -33,7 +33,7 @@ export const CartProducts = () => {
                                 </div>
 
                                 <div>
-                                    <span className="mb-1 block font-bold text-gray-800 md:text-lg">{product.price}</span>
+                                    <span className="mb-1 block font-bold text-gray-800 md:text-lg">{product.price}€</span>
 
                                     <span className="flex items-center gap-1 text-sm text-gray-500">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -48,7 +48,7 @@ export const CartProducts = () => {
                             <div className="flex w-full justify-between border-t p-4 sm:w-auto sm:border-none sm:pl-0 lg:p-6 lg:pl-0">
                                 <div className="flex flex-col items-start gap-2">
                                     <div className="flex h-12 w-20 overflow-hidden rounded border">
-                                        <input type="number" value={product.quantity} className="w-full px-4 py-2 outline-none ring-inset ring-indigo-300 transition duration-100 focus:ring" />
+                                        <input type="number" value={product.quantity} readOnly className="w-full px-4 py-2 outline-none ring-inset ring-indigo-300 transition duration-100 focus:ring" />
 
                                         <div className="flex flex-col divide-y border-l">
                                             <button onClick={() => {addProductToCart(product)}} className="flex w-6 flex-1 select-none items-center justify-center bg-white leading-none transition duration-100 hover:bg-gray-100 active:bg-gray-200">+</button>
@@ -60,7 +60,7 @@ export const CartProducts = () => {
                                 </div>
 
                                 <div className="ml-4 pt-3 md:ml-8 md:pt-2 lg:ml-16">
-                                    <span className="block font-bold text-gray-800 md:text-lg">{product.price * product.quantity}</span>
+                                    <span className="block font-bold text-gray-800 md:text-lg">{product.price * product.quantity}€</span>
                                 </div>
                             </div>
                         </div>

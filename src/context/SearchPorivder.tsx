@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState } from "react";
-import { useProduct } from "../hooks/useProduct";
 import { Producto } from "../interfaces/producto-tienda";
+import { useProducts } from "../hooks/useProducts";
 
 
 const SearchContext = createContext<any>(null);
@@ -10,13 +10,12 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     
     const [stateSearchProduct, setStateSearchProduct] = useState<Producto[]>([]);
 
-    const producto = useProduct();
-    const productos = producto[0].producto;
+    const producto = useProducts().products;
 
     const searchProduct = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value);
         const search = e.target.value;
-        const filteredProductos = productos.filter((producto: Producto) => {
+        const filteredProductos = producto.filter((producto: Producto) => {
           return producto.title.toLowerCase().includes(search.toLowerCase());
         });
         setStateSearchProduct(filteredProductos);

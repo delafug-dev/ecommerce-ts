@@ -2,6 +2,9 @@ import { Producto } from "../../interfaces/producto-tienda";
 import { useAuth } from "../../hooks/useAuth";
 import { useCartProduct } from "../../hooks/useCartProduct";
 import { useNavigate } from "react-router-dom";
+import { useProducts } from "../../hooks/useProducts";
+import { useState } from "react";
+import { ModalEditProduct } from "../edit-product/ModalEditProduct";
 
 interface CardProps {
     producto: Producto;
@@ -12,6 +15,8 @@ export const Card: React.FC<CardProps> = ({producto}) => {
 
     const {title, description, price, image, id} = producto;
     const { user } = useAuth();
+    const { deleteProduct } = useProducts();
+    const [modalEditProduct, setModalEditProduct] = useState(false);
 
     const { addProductToCart, addProductTotalNumber } = useCartProduct();
     const navigate = useNavigate();
@@ -24,6 +29,10 @@ export const Card: React.FC<CardProps> = ({producto}) => {
         }
         
     };
+
+    const handleEditProduct = () => {
+        setModalEditProduct(!modalEditProduct);
+    }
     
 
   return (
@@ -70,7 +79,20 @@ export const Card: React.FC<CardProps> = ({producto}) => {
                   }
                   
               </div>
+                  { user.role === 'admin' && 
+                    <div className="flex flex-row items-center gap-3 mt-5">
+                        <button onClick={handleEditProduct} className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded">
+                                Editar Producto
+                        </button>
+                        <button onClick={() => deleteProduct(producto.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+                                Eliminar Producto
+                        </button>
+                    </div>
+                  }
           </div>
+                  {
+                        modalEditProduct ? <ModalEditProduct toggleModal={handleEditProduct} producto={producto}/> : null
+                  }
       </div>
   )
 }

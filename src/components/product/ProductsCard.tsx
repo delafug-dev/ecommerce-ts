@@ -1,14 +1,19 @@
-import { useProduct } from "../../hooks/useProduct";
+import { useProducts } from "../../hooks/useProducts";
 import { useSearch } from "../../hooks/useSearch";
 import { Producto } from "../../interfaces/producto-tienda";
 import { Card } from "./Card";
+import { Modal } from '../new-product/Modal';
+import { useState } from "react";
 
 
 export const ProductsCard = () => {
 
   const { stateSearchProduct } = useSearch();
-  const products = useProduct();
-  const productos = products[0].producto as Producto[];
+  const {productos} = useProducts();
+  console.log(productos)
+
+  const [modalHidden, setModalHidden] = useState(true);
+  const toggleModal = () => setModalHidden(!modalHidden);
 
   return (
     <div className="bg-white py-6 sm:py-8 lg:py-12">
@@ -27,6 +32,16 @@ export const ProductsCard = () => {
           }
 
         </div>
+
+          <div className="flex justify-end mt-14">
+            <button onClick={toggleModal} className="py-2 px-6 uppercase bg-blue-500 hover:bg-blue-700 text-white text-xl rounded-md ">
+              Add Product
+            </button>
+            {
+              modalHidden ? null : <Modal toggleModal={toggleModal}/>
+            }
+          </div>
+
       </div>
     </div>
   );
