@@ -1,21 +1,23 @@
-import { useProducts } from "../../hooks/useProducts";
+import useProductos  from "../../hooks/useProductos";
 import { useSearch } from "../../hooks/useSearch";
 import { Producto } from "../../interfaces/producto-tienda";
 import { Card } from "./Card";
 import { Modal } from '../new-product/Modal';
-import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 
 export const ProductsCard = () => {
 
-  const { stateSearchProduct } = useSearch();
-  const {productos} = useProducts();
-  const { user } = useAuth();
-  console.log(productos)
 
-  const [modalHidden, setModalHidden] = useState(true);
-  const toggleModal = () => setModalHidden(!modalHidden);
+
+  const { stateSearchProduct } = useSearch();
+  const {productos, isModalOpen, setIsModalOpen} = useProductos();
+  const { user } = useAuth();
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+
+
 
   return (
     <div className="bg-white py-6 sm:py-8 lg:py-12">
@@ -28,7 +30,7 @@ export const ProductsCard = () => {
               <Card key={producto.id} producto={producto} />
               ))
             :
-              productos.map((producto) => (
+              productos && productos.map((producto : Producto) => (
                 <Card key={producto.id} producto={producto} />
               ))
           }
@@ -43,7 +45,7 @@ export const ProductsCard = () => {
               </button>
             }
             { 
-              modalHidden  ? null : <Modal toggleModal={toggleModal}/>
+              !isModalOpen  ? null : <Modal toggleModal={toggleModal}/>
             }
           </div>
 

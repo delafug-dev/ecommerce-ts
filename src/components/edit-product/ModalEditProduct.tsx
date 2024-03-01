@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Producto } from "../../interfaces/producto-tienda";
-import { useProducts } from "../../hooks/useProducts";
+import useProductos from "../../hooks/useProductos";
 
 
 export const ModalEditProduct = ({toggleModal, producto}) => {
 
 
-    const {updateProduct} = useProducts();
+    const { handleSubmitFormEditProduct } = useProductos();
 
     const [productoEditado, setProductoEditado] = useState<Producto>({
         id: "",
@@ -45,7 +45,7 @@ export const ModalEditProduct = ({toggleModal, producto}) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await updateProduct(producto.id, productoEditado);
+        await handleSubmitFormEditProduct(e, productoEditado);
         toggleModal();
     };
 

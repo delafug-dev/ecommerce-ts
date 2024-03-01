@@ -1,46 +1,16 @@
-import { useState } from "react";
-import { useProducts } from "../../hooks/useProducts";
-import { Producto } from "../../interfaces/producto-tienda";
+import useProductos from "../../hooks/useProductos";
+
 
 
 export const Modal = ({toggleModal}) => {
     
-    const {newProduct} = useProducts();
+    const {form, setForm, handleSubmitFormNewProduct} = useProductos();
 
-    const [producto, setProducto] = useState<Producto>({
-        id: "",
-        title: "",
-        price: 0,
-        category: "",
-        image: "",
-        description: ""
-    });
+    // const closeModal = (e) => {
+    //     e.preventDefault();
+    //     setIsModalOpen(!isModalOpen);
+    // }
 
-    const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setProducto({...producto, title: e.target.value});
-    }
-
-    const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setProducto({...producto, price: parseInt(e.target.value)});
-    }
-
-    const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setProducto({...producto, category: e.target.value});
-    }
-
-    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setProducto({...producto, image: e.target.value});
-    }
-
-    const handleDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setProducto({...producto, description: e.target.value});
-    }
-
-    const handleSubmit = async(e: React.FormEvent) => {
-        e.preventDefault();
-        await newProduct(producto);
-        toggleModal();
-    };
 
   return (
 
@@ -61,19 +31,19 @@ export const Modal = ({toggleModal}) => {
                           </button>
                       </div>
 
-                      <form onSubmit={handleSubmit} className="p-4 md:p-5">
+                      <form onSubmit={handleSubmitFormNewProduct} className="p-4 md:p-5">
                           <div className="grid gap-4 mb-4 grid-cols-2">
                               <div className="col-span-2">
                                   <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                                  <input onChange={handleName} type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escribe el nombre del producto aquí" required/>
+                                  <input onChange={(e) => {setForm({...form, title: e.target.value})}} type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escribe el nombre del producto aquí" required/>
                               </div>
                               <div className="col-span-2 sm:col-span-1">
                                   <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
-                                  <input onChange={handlePrice} type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123€" required/>
+                                  <input onChange={(e) => {setForm({...form, price: Number(e.target.value)})}} type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123€" required/>
                               </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
-                                <select onSelect={handleCategory} id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <select onChange={(e) => {setForm({...form, category: e.target.value})}} id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option>Select category</option>
                                     <option value="camisetas">Camisetas</option>
                                     <option value="chaquetas">Chaquetas</option>
@@ -84,11 +54,11 @@ export const Modal = ({toggleModal}) => {
                             </div>
                             <div className="col-span-2">
                                   <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
-                                  <input onChange={handleImage} type="text" name="image" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Introduce la imagen" required/>
+                                  <input onChange={(e) => {setForm({...form, image: e.target.value})}} type="text" name="image" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Introduce la imagen" required/>
                               </div>
                             <div className="col-span-2">
                                 <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                                <textarea onChange={handleDescription} id="description" tabIndex={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe la descripción del producto aquí"></textarea>
+                                <textarea onChange={(e) => {setForm({...form, description: e.target.value})}} id="description" tabIndex={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe la descripción del producto aquí"></textarea>
                             </div>
                           </div>
                           <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

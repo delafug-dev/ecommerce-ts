@@ -19,7 +19,7 @@ const CartProductsProvider = ({ children }) => {
 
   const [cartProducts, setCartProduct] = useState<Producto[]>([]);
 
-  const [totalProductsNumber, setTotalProductsNumber] = useState<number>(cartProducts.reduce((acc, product) => acc + product.quantity, 0));
+  const [totalProductsNumber, setTotalProductsNumber] = useState<number>(cartProducts.reduce((acc, product) => acc + (product.quantity ?? 0), 0));
 
   useEffect(() => {
       const itemsSaved = JSON.parse(localStorage.getItem('cartProducts') || '[]');
@@ -32,10 +32,9 @@ const CartProductsProvider = ({ children }) => {
   }
 
   const addProductToCart = (producto: Producto) => { 
-      producto.quantity = 1;
       const productExist = cartProducts.find((product) => product.id === producto.id);
       if(productExist) {
-          const newCart = cartProducts.map((product) => product.id === producto.id ? {...product, quantity: product.quantity + 1} : product);
+          const newCart = cartProducts.map((product) => product.id === producto.id ? {...product, quantity: (product.quantity ?? 0) + 1} : product);
           setCartProduct(newCart)
           localStorage.setItem('cartProducts', JSON.stringify(newCart));
       }else {

@@ -2,9 +2,10 @@ import { Producto } from "../../interfaces/producto-tienda";
 import { useAuth } from "../../hooks/useAuth";
 import { useCartProduct } from "../../hooks/useCartProduct";
 import { useNavigate } from "react-router-dom";
-import { useProducts } from "../../hooks/useProducts";
 import { useState } from "react";
 import { ModalEditProduct } from "../edit-product/ModalEditProduct";
+import { useDispatch } from "react-redux";
+import { revomeProductThunk } from "../../redux/reducers/productReducer";
 
 interface CardProps {
     producto: Producto;
@@ -15,12 +16,13 @@ export const Card: React.FC<CardProps> = ({producto}) => {
 
     const {title, description, price, image, id} = producto;
     const { user } = useAuth();
-    const { deleteProduct } = useProducts();
+    const dispatch = useDispatch();
     const [modalEditProduct, setModalEditProduct] = useState(false);
 
     const { addProductToCart, addProductTotalNumber } = useCartProduct();
     const navigate = useNavigate();
     const handleCardClick = () => {
+
         if(!user || !user.username || user.username.length === 0) {
             navigate('/login')
             return;
@@ -30,10 +32,14 @@ export const Card: React.FC<CardProps> = ({producto}) => {
         
     };
 
+
     const handleEditProduct = () => {
         setModalEditProduct(!modalEditProduct);
     }
     
+    const handleRemoveProduct = () => {
+        dispatch(revomeProductThunk(producto.id) as any)
+    }
 
   return (
       <div className="overflow-hidden shadow-sm">
@@ -43,7 +49,6 @@ export const Card: React.FC<CardProps> = ({producto}) => {
           >
               <img
                   src={image}
-                  loading="lazy"
                   alt="Photo by Austin Wade"
                   className="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110"
               />
@@ -84,7 +89,7 @@ export const Card: React.FC<CardProps> = ({producto}) => {
                         <button onClick={handleEditProduct} className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded">
                                 Editar Producto
                         </button>
-                        <button onClick={() => deleteProduct(producto.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+                        <button onClick={() => handleRemoveProduct(producto.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
                                 Eliminar Producto
                         </button>
                     </div>
