@@ -10,8 +10,6 @@ export const Login = () => {
 
     const handleLogin = () => {
         onChangeUser(watch('username'), watch('email'));
-        console.log(watch('email'));
-        console.log(watch('username'));
         setTimeout(() => {login()}, 1000);
     }
 

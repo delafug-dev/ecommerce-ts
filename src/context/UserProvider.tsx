@@ -45,6 +45,7 @@ export const UserAuthProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
 
     const logout = () => {
+        setUser({ username: '', email: '', role: '' });
         localStorage.removeItem('user');
     }
     
