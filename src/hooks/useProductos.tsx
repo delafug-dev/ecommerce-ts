@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllProducts } from "../redux/reducers/productReducer.js";
 import {
@@ -26,38 +25,27 @@ export default function useProductos() {
 
 
   // Función que se ejecuta en el formulario del modal - onSubmit
-  const handleSubmitFormNewProduct = async (e) => {
-      e.preventDefault();
-
-      const newProduct: Producto = {
-        id: uuidv4(),
-        title: form.title,
-        price: form.price,
-        category: form.category,
-        description: form.description,
-        image: form.description,
-      };
-
+  const handleSubmitFormNewProduct = (newProducto : Producto) => {
       try {
-        dispatch(addProductThunk(newProduct) as any); 
+        dispatch(addProductThunk(newProducto) as any);
       } catch (error) {
         console.error("Error creating product", error);
       }
     
   };
 
-  const handleSubmitFormEditProduct = async (e, form) => {
-    e.preventDefault();
+  const handleSubmitFormEditProduct = async(productoEditado : Producto) => {
     const findProduct = productos?.find(
-      (product) => product.id.toString() === form.id.toString()
+      (product: Producto) => product.id.toString() === form.id.toString()
     );
     const editedProduct = {
       ...findProduct,
-      title: form.title,
-      price: form.price,
-      category: form.category,
-      description: form.description,
-      image: form.image,
+      id: productoEditado.id,
+      title: productoEditado.title,
+      price: productoEditado.price,
+      category: productoEditado.category,
+      description: productoEditado.description,
+      image: productoEditado.image,
     };
     try {
       dispatch(updateProductThunk(editedProduct) as any);

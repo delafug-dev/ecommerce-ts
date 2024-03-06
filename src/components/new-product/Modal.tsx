@@ -1,16 +1,51 @@
 import useProductos from "../../hooks/useProductos";
+import {useForm} from "react-hook-form";
+import {Producto} from "@/interfaces/producto-tienda.ts";
+import {v4 as uuidv4} from "uuid";
 
 
 
 export const Modal = ({toggleModal}) => {
     
-    const {form, setForm, handleSubmitFormNewProduct} = useProductos();
+    const {handleSubmitFormNewProduct} = useProductos();
+    const { register, handleSubmit, formState: { errors }, watch, setError } = useForm();
 
-    // const closeModal = (e) => {
-    //     e.preventDefault();
-    //     setIsModalOpen(!isModalOpen);
-    // }
+    const newProduct: Producto = {
+        id: uuidv4(),
+        title: watch('name'),
+        price: watch('price'),
+        category: watch('category'),
+        description: watch('description'),
+        image: watch('image'),
+    };
 
+    const handleRegisterNewProduct = () => {
+        handleSubmitFormNewProduct(newProduct);
+    }
+
+    const handleNameProduct = () => {
+        const name = watch('name');
+        if(name.length < 3){
+            return setError('name', {message: "El nombre debe tener al menos 3 caracteres."})
+        }
+        if(name.length > 15){
+            return setError('name', {message: "El nombre no puede tener más de 15 caracteres."})
+        }
+    }
+
+    const handlePriceProduct = () => {
+        const price = watch('price');
+        if(price < 1){
+            return setError('price', {message: "El precio debe ser mayor que 0."})
+        }
+    }
+
+    const handleImageProduct = () => {
+        const image = watch('image');
+        if(!image.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/)){
+            return setError('image', {message: "Por favor, introduce una url válida."})
+        }
+    }
 
   return (
 
@@ -21,7 +56,7 @@ export const Modal = ({toggleModal}) => {
 
                       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                              Create New Product
+                              Crear Un Nuevo Producto
                           </h3>
                           <button onClick={toggleModal} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
                               <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -31,34 +66,56 @@ export const Modal = ({toggleModal}) => {
                           </button>
                       </div>
 
-                      <form onSubmit={handleSubmitFormNewProduct} className="p-4 md:p-5">
+                      <form onSubmit={handleSubmit(handleRegisterNewProduct)} className="p-4 md:p-5">
                           <div className="grid gap-4 mb-4 grid-cols-2">
                               <div className="col-span-2">
                                   <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                                  <input onChange={(e) => {setForm({...form, title: e.target.value})}} type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escribe el nombre del producto aquí" required/>
+                                  <input  type="text" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escribe el nombre del producto aquí"
+                                         {...register("name", {required: "Por favor, ingrese un nombre"})} onBlur={() => handleNameProduct()}/>
+                                    {errors.name && (
+                                        <span className="text-red-600 text-sm">{errors.name.message}</span>
+                                    )}
+
                               </div>
                               <div className="col-span-2 sm:col-span-1">
                                   <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
-                                  <input onChange={(e) => {setForm({...form, price: Number(e.target.value)})}} type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123€" required/>
+                                  <input type="number"  id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123€"
+                                         {...register("price", {required: "Por favor, introduce un precio"})} onBlur={() => handlePriceProduct()}/>
+                                    {errors.price && (
+                                        <span className="text-red-600 text-xs">{errors.price.message}</span>
+                                    )}
+
                               </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
-                                <select onChange={(e) => {setForm({...form, category: e.target.value})}} id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option>Select category</option>
+                                <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        {...register("category", {required: "Por favor, selecciona una categoría"})}>
+                                    <option value="">Select category</option>
                                     <option value="camisetas">Camisetas</option>
                                     <option value="chaquetas">Chaquetas</option>
                                     <option value="zapatillas">Zapatillas</option>
                                     <option value="pantalones">Pantalones</option>
                                     <option value="accesorios">Accesorios</option>
                                 </select>
+                                    {errors.category && (
+                                        <span className="text-red-600 text-xs">{errors.category.message}</span>
+                                    )}
                             </div>
                             <div className="col-span-2">
                                   <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
-                                  <input onChange={(e) => {setForm({...form, image: e.target.value})}} type="text" name="image" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Introduce la imagen" required/>
+                                  <input type="text" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Introduce la imagen"
+                                         {...register("image", {required: "Por favor, introduce una imagen"})} onBlur={() => handleImageProduct()}/>
+                                    {errors.image && (
+                                        <span className="text-red-600 text-sm">{errors.image.message}</span>
+                                    )}
                               </div>
                             <div className="col-span-2">
                                 <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                                <textarea onChange={(e) => {setForm({...form, description: e.target.value})}} id="description" tabIndex={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe la descripción del producto aquí"></textarea>
+                                <textarea id="description" tabIndex={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe la descripción del producto aquí"
+                                          {...register("description",{required: "Por favor, introduce una descripción"})}></textarea>
+                                    {errors.description && (
+                                        <span className="text-red-600 text-sm">{errors.description.message}</span>
+                                    )}
                             </div>
                           </div>
                           <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

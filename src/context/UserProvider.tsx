@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, ReactNode, useEffect } from 'react';
 
 
 interface UserContextProps {
@@ -9,14 +9,14 @@ interface UserContextProps {
     };
     logout: () => void;
     login: () => void;
-    onChangeUsername: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeUser: (username :string, email: string) => void;
 }
 
 export const UserAuthContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserAuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-        
+
+    const contieneAdminExpRegular = (str:string) => /admin/i.test(str);
 
     const [user, setUser] = useState({
         username: '',
@@ -29,20 +29,19 @@ export const UserAuthProvider: React.FC<{ children: ReactNode }> = ({ children }
         user && setUser(user);
     }, [])
 
-    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUser({ ...user, username: e.target.value });
-    }
 
-    const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.value.search('admin') !== -1){
-            setUser({ ...user, email: e.target.value ,role: 'admin' });
-        }else{
-            setUser({ ...user,email: e.target.value ,role: 'user' });
+    const onChangeUser = (username: string, email: string) => {
+        setUser({ ...user, username: username });
+        if (contieneAdminExpRegular(email)) {
+            setUser(prevUser => ({ ...prevUser, email: email, role: 'admin' }));
+        } else {
+            setUser(prevUser => ({ ...prevUser, email: email, role: 'user' }));
         }
     }
 
     const login = () => {
-        localStorage.setItem('user', JSON.stringify(user));
+        if (user.email !== '' && user.username !== '') localStorage.setItem('user', JSON.stringify(user));
+        console.log('user', user)
     }
 
     const logout = () => {
@@ -50,7 +49,7 @@ export const UserAuthProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
     
     return (
-        <UserAuthContext.Provider value={{user,login, logout, onChangeUsername, onChangeEmail}}>
+        <UserAuthContext.Provider value={{user,login, logout, onChangeUser}}>
             {children}
         </UserAuthContext.Provider>
     );
